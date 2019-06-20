@@ -1,0 +1,5 @@
+.vscode
+.prettierrc
+rollup.config.js
+.nvmrc
+README.md
