@@ -1,10 +1,10 @@
 // rollup.config.js
 import resolve from 'rollup-plugin-node-resolve'
 import babel from 'rollup-plugin-babel'
-const rollupTypescript = require('rollup-plugin-typescript')
+import rollupTypescript from 'rollup-plugin-typescript'
 
 export default {
-  input: 'src/main.ts',
+  input: 'src/main.tsx',
   output: {
     file: 'index.js',
     format: 'cjs',
@@ -14,6 +14,8 @@ export default {
     rollupTypescript(), // for TS
     babel({
       exclude: 'node_modules/**', // only transpile our source code
+      extensions: ['.js', '.jsx', '.ts', '.tsx'],
     }),
   ],
+  external: ['react', '@storybook/addons', 'styled-components'],
 }
