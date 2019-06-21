@@ -1,3 +1,6 @@
 node_modules
 .env
 yarn-error.log
+
+# bundle
+index.js
