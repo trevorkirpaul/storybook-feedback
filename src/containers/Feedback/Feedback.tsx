@@ -1,18 +1,20 @@
 import React from 'react'
-import addons from '@storybook/addons'
 
-import { Input } from './Form'
-import Button from './Button'
+import { Input } from 'components/Form'
+import Button from 'components/Button'
 
 export interface FeedbackProps {
   active: boolean
   key: any
   api: any
+  /**
+   * Firebase DB instance
+   */
+  database: any
 }
 
 class Feedback extends React.Component<FeedbackProps> {
   state = {
-    value: 'Trevor',
     name: '',
   }
 
@@ -24,6 +26,19 @@ class Feedback extends React.Component<FeedbackProps> {
       ...prevState,
       [name]: value,
     }))
+  }
+
+  // for testing firebase
+  handleTestDB = () => {
+    return console.log('NEW')
+    // return googleSignIn()
+
+    // this.props.database
+    //   .ref('/favorites/')
+    //   .once('value')
+    //   .then((snapshot) => {
+    //     console.log(snapshot.val())
+    //   })
   }
 
   render() {
@@ -39,7 +54,7 @@ class Feedback extends React.Component<FeedbackProps> {
         <React.Fragment>
           <Input name='name' value={name} onChange={this.handleOnChange} />
 
-          <Button onClick={() => console.log(this.state)}>Submit</Button>
+          <Button onClick={() => this.handleTestDB()}>Submit</Button>
         </React.Fragment>
       )
     }
@@ -47,14 +62,3 @@ class Feedback extends React.Component<FeedbackProps> {
 }
 
 export default Feedback
-
-// Register the addon with a unique name.
-addons.register('Feedback', (api) => {
-  // Also need to set a unique name to the panel.
-  addons.addPanel('Feedback/panel', {
-    title: 'Feedback',
-    render: ({ active, key }) => (
-      <Feedback key={key} api={api} active={active} />
-    ),
-  })
-})

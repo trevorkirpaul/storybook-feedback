@@ -21,5 +21,5 @@ export default {
       comments: false, // don't preserve comments
     }),
   ],
-  external: ['react', '@storybook/addons', 'styled-components'],
+  external: ['react', '@storybook/addons', 'styled-components', 'firebase'],
 }

@@ -4,3 +4,6 @@ rollup.config.js
 .nvmrc
 README.md
 yarn-error.log
+.env
+config
+node_modules

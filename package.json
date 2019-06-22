@@ -16,6 +16,7 @@
     "@storybook/router": "5.1.9",
     "@storybook/theming": "5.1.9",
     "@types/styled-components": "^4.1.16",
+    "firebase": "^6.2.1",
     "react": "16.8.6",
     "styled-components": "^4.3.2"
   },
