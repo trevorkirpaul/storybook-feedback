@@ -37,6 +37,7 @@
     "typescript": "^3.5.2"
   },
   "scripts": {
-    "build": "rollup -c --compact"
+    "build": "rollup -c --compact",
+    "watch": "rollup -c --watch"
   }
 }

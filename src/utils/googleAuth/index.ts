@@ -1,40 +1,53 @@
 import * as firebase from 'firebase'
 
-const provider = new firebase.auth.GoogleAuthProvider()
-
 /**
  * invoke when you want to redirect user to the google sign in page
  */
-const googleSignIn = () =>
-  firebase
+const googleSignIn = () => {
+  const provider = new firebase.auth.GoogleAuthProvider()
+  return firebase
     .auth()
     .signInWithRedirect(provider)
-    .then((result) => console.log(result))
-    .catch((error) => console.log(error))
+    .then((result) => {
+      console.log(result)
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+}
 
-/**
- * after user signs in through the google redirect,
- * this method will get that user session, whether it
- * was successful or not
- */
-const getUserSession = () =>
-  firebase
+const getUserSession = () => {
+  return firebase
     .auth()
     .getRedirectResult()
     .then((result) => {
-      if (result.credential) {
+      if (result.credential && result.user) {
         return {
+          error: false,
           credential: result.credential,
-          user: result.user,
+          displayName: result.user.displayName,
+          email: result.user.email,
+          avatar: result.user.photoURL,
         }
       }
-    })
-    .catch((err) => {
+
       return {
-        errorCode: err.code,
-        errorMessage: err.message,
-        userEmail: err.email,
+        error: true,
+        credential: null,
+        displayName: null,
+        email: null,
+        avatar: null,
       }
     })
+    .catch(() => {
+      return {
+        error: true,
+        credential: null,
+        displayName: null,
+        email: null,
+        avatar: null,
+      }
+    })
+}
 
-export { googleSignIn, provider, getUserSession }
+export { googleSignIn, getUserSession }

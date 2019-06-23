@@ -7,10 +7,28 @@ export interface InputProps {
   value?: string
   onChange: (e: React.FormEvent<HTMLInputElement>) => void
   type: 'text' | 'password'
+  className?: any
+  placeholder?: string
 }
 
-const Input = ({ name, value, onChange, type }: InputProps) => {
-  return <S.Input name={name} type={type} value={value} onChange={onChange} />
+const Input = ({
+  name,
+  value,
+  placeholder,
+  onChange,
+  type,
+  className,
+}: InputProps) => {
+  return (
+    <S.Input
+      className={className}
+      name={name}
+      type={type}
+      value={value}
+      placeholder={placeholder}
+      onChange={onChange}
+    />
+  )
 }
 
 Input.defaultProps = {
