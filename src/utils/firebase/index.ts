@@ -4,9 +4,11 @@ const uuidv4 = require('uuid/v4')
 const sendComment = ({
   content,
   author,
+  storyId,
 }: {
   content: string
   author: string
+  storyId: string
 }) => {
   return firebase
     .database()
@@ -15,18 +17,29 @@ const sendComment = ({
       content,
       author,
       uuid: uuidv4(),
+      storyId,
     })
 }
 
 const readComments = () => {
-  firebase
-    .database()
-    .ref('comments/')
-    .once('value')
-    .then((snapshot) => {
-      console.log(snapshot.val())
-    })
-    .catch((err) => console.log('ERROR', err))
+  return new Promise((res, rej) => {
+    firebase
+      .database()
+      .ref('comments/')
+      .once('value')
+      .then((snapshot) => {
+        res({
+          error: false,
+          values: snapshot.val(),
+        })
+      })
+      .catch((err) => {
+        rej({
+          error: true,
+          values: null,
+        })
+      })
+  })
 }
 
 export { sendComment, readComments }

@@ -5,6 +5,9 @@ import Login from 'containers/Login'
 import Chat from 'containers/Chat'
 import ActionBar from 'containers/ActionBar'
 import { getUserSession } from 'utils/googleAuth'
+import Comments from 'containers/Comments'
+import { readComments } from 'utils/firebase'
+import { sanitizeCommentsFromFirebase } from 'utils/helpers'
 
 export interface FeedbackProps {
   active: boolean
@@ -24,6 +27,8 @@ class Feedback extends React.Component<FeedbackProps> {
     credential: '',
     refreshToken: '',
     signInError: false,
+    commentsError: false,
+    comments: [],
   }
 
   componentDidMount() {
@@ -69,11 +74,29 @@ class Feedback extends React.Component<FeedbackProps> {
       .catch((err) => {
         return this.setState({ signInError: true })
       })
+
+    this.handleGetComments()
+  }
+
+  handleGetComments = () => {
+    console.log()
+
+    readComments()
+      .then((response) => {
+        return this.setState({
+          comments: sanitizeCommentsFromFirebase(response.values),
+        })
+      })
+      .catch(() => {
+        return this.setState({
+          commentsError: true,
+        })
+      })
   }
 
   render() {
     const { active } = this.props
-    const { email, avatar } = this.state
+    const { email, avatar, comments } = this.state
 
     // addon not focused
     if (!active) {
@@ -88,9 +111,18 @@ class Feedback extends React.Component<FeedbackProps> {
 
       return (
         <Chat>
-          <h2>Feedback</h2>
+          <Comments
+            comments={comments}
+            handleGetComments={this.handleGetComments}
+            storyId={this.props.api.getUrlState().storyId}
+          />
 
-          <ActionBar avatar={avatar} userEmail={email} />
+          <ActionBar
+            avatar={avatar}
+            userEmail={email}
+            handleGetComments={this.handleGetComments}
+            storyId={this.props.api.getUrlState().storyId}
+          />
         </Chat>
       )
     }

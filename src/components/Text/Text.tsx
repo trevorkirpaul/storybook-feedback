@@ -4,7 +4,7 @@ import * as S from './styles'
 
 export interface TextProps {
   as: React.ElementType
-  children: string
+  children: React.ReactNode
   className?: any
 }
 

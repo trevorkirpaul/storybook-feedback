@@ -9,15 +9,23 @@ import * as S from './styles'
 export interface ActionBarProps {
   avatar: string
   userEmail: string
+  handleGetComments: () => void
+  storyId: string
 }
 
-const ActionBar = ({ avatar, userEmail }: ActionBarProps) => {
+const ActionBar = ({
+  avatar,
+  userEmail,
+  handleGetComments,
+  storyId,
+}: ActionBarProps) => {
   const [values, setValues] = React.useState({ message: '' })
 
   const send = () => {
     sendComment({
       content: values.message,
       author: userEmail,
+      storyId,
     })
 
     return setValues({ message: '' })
@@ -28,7 +36,7 @@ const ActionBar = ({ avatar, userEmail }: ActionBarProps) => {
       <Avatar source={avatar} />
 
       <S.MessageSection>
-        <S.Input
+        <S.TextArea
           name='message'
           onChange={({ currentTarget: { value } }) =>
             setValues({ message: value })
@@ -36,7 +44,10 @@ const ActionBar = ({ avatar, userEmail }: ActionBarProps) => {
           value={values.message}
         />
 
-        <Button onClick={() => send()}>Send</Button>
+        <S.MessageActions>
+          <Button onClick={() => send()}>Send</Button>
+          <Button onClick={() => handleGetComments()}>Refresh</Button>
+        </S.MessageActions>
       </S.MessageSection>
     </S.ActionBar>
   )
