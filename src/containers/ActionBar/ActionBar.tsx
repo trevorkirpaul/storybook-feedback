@@ -42,6 +42,7 @@ const ActionBar = ({
             setValues({ message: value })
           }
           value={values.message}
+          placeholder='enter comment...'
         />
 
         <S.MessageActions>
