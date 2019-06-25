@@ -1,9 +1,11 @@
+node_modules
+.env
+yarn-error.log
+
+
 .vscode
 .prettierrc
 rollup.config.js
 .nvmrc
 README.md
-yarn-error.log
-.env
 config
-node_modules

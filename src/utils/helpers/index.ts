@@ -1,5 +1,8 @@
 import * as R from 'ramda'
 
+const ADDON_ID = 'Feedback/panel'
+const EVENT_ID = `${ADDON_ID}/event`
+
 const sanitizeCommentsFromFirebase = (
   comments: Array<{
     [id: string]: {
@@ -13,4 +16,4 @@ const sanitizeCommentsFromFirebase = (
   return R.valuesIn(comments)
 }
 
-export { sanitizeCommentsFromFirebase }
+export { sanitizeCommentsFromFirebase, ADDON_ID, EVENT_ID }

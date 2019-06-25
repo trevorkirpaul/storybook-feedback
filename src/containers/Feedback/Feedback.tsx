@@ -7,7 +7,7 @@ import ActionBar from 'containers/ActionBar'
 import { getUserSession } from 'utils/googleAuth'
 import Comments from 'containers/Comments'
 import { readComments } from 'utils/firebase'
-import { sanitizeCommentsFromFirebase } from 'utils/helpers'
+import { sanitizeCommentsFromFirebase, EVENT_ID } from 'utils/helpers'
 
 export interface FeedbackProps {
   active: boolean
@@ -16,7 +16,12 @@ export interface FeedbackProps {
   /**
    * Firebase DB instance
    */
-  database: any
+  database?: any
+  // @TODO get correct type
+  /**
+   * used to transport config from storybook config
+   */
+  channel: any
 }
 
 class Feedback extends React.Component<FeedbackProps> {
@@ -32,9 +37,42 @@ class Feedback extends React.Component<FeedbackProps> {
   }
 
   componentDidMount() {
+    const { channel } = this.props
+
+    // used to determine if we have a legit
+    // firebase connection
+    const firebaseInitialized = firebase.apps.length > 0
+
+    channel.on(EVENT_ID, (config) => {
+      firebase.initializeApp(config)
+    })
+
     // we are persisting user sessions
     // so let's first check if there is
     // an active user session avail
+
+    firebaseInitialized && this.handleGetFirebaseUser()
+
+    // run method to check for signed user
+    // this will get the user data after a
+    // successful Google sign in from the re-direct
+    // and set the data in component state
+    // if it fails, we'll trigger an error message
+    firebaseInitialized && this.handleGetFirebaseUser()
+
+    firebaseInitialized && this.handleGetComments()
+  }
+
+  componentDidUpdate() {
+    const { displayName } = this.state
+    const firebaseInitialized = firebase.apps.length > 0
+
+    if (!displayName && firebaseInitialized) {
+      this.handleGetFirebaseUser()
+    }
+  }
+
+  handleGetFirebaseUser = () => {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         const { displayName, email, photoURL, refreshToken } = user
@@ -47,12 +85,9 @@ class Feedback extends React.Component<FeedbackProps> {
         }))
       }
     })
+  }
 
-    // run method to check for signed user
-    // this will get the user data after a
-    // successful Google sign in from the re-direct
-    // and set the data in component state
-    // if it fails, we'll trigger an error message
+  handleGetUserSession = () => {
     getUserSession()
       .then((response) => {
         if (!response.error) {
@@ -74,13 +109,9 @@ class Feedback extends React.Component<FeedbackProps> {
       .catch((err) => {
         return this.setState({ signInError: true })
       })
-
-    this.handleGetComments()
   }
 
   handleGetComments = () => {
-    console.log()
-
     readComments()
       .then((response) => {
         return this.setState({
