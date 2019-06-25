@@ -47,7 +47,12 @@ const ActionBar = ({
 
         <S.MessageActions>
           <Button onClick={() => send()}>Send</Button>
-          <Button onClick={() => handleGetComments()}>Refresh</Button>
+          <Button
+            variant='secondary'
+            onClick={() => setValues({ message: '' })}
+          >
+            Clear
+          </Button>
         </S.MessageActions>
       </S.MessageSection>
     </S.ActionBar>

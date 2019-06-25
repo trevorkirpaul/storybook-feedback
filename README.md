@@ -8,6 +8,12 @@ This addon is still very early in development. Currently, the foundational UI wo
 
 There still needs to be a ton of fine tuning but the rest of the work will mainly be with getting the addon to function correctly as an NPM package and allowing the end user to be able to connect their own Firebase instance.
 
+## Todo
+
+- [ ] remove redundant/unused deps
+- [ ] truncate messages that exceed view width
+- [ ] add more chat features (delete/update)
+
 ## How to use this addon
 
 Within your `.storybook/config.ts` file, add this:

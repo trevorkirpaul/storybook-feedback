@@ -1,11 +1,14 @@
 import styled from 'styled-components'
 
-const Button = styled.button`
+import { ButtonProps } from './Button'
+
+const Button = styled.button<ButtonProps>`
   border: none;
   border-radius: 4px;
-  background-color: palevioletred;
+  background-color: ${({ variant }) =>
+    variant === 'primary' ? 'palevioletred' : '#f8bbd0'};
   padding: 5px 10px;
-  color: #ffffff;
+  color: ${({ variant }) => (variant === 'primary' ? '#fff' : 'magenta')};
 
   &:hover {
     cursor: pointer;

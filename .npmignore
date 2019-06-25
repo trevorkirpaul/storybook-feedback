@@ -2,10 +2,12 @@ node_modules
 .env
 yarn-error.log
 
-
+src
+tsconfig.json
 .vscode
 .prettierrc
 rollup.config.js
 .nvmrc
 README.md
+README
 config

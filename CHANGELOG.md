@@ -6,7 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## Unreleased
 
-## [0.0.0] - 2019-06-
+## [0.0.2] - 2019-06-24
+
+### Added
+
+- added Loader component
+- updated sign in / get session process to hopefully render a loading state when fetching the user
+- added more files to npmignore
+- updated Feedback to subscribe to comments and update state when comments length from firebase does not equal comments in local state
+- updated sign in logic to prevent infinite renders
+- replaced "refresh" button with "clear" button
+
+## [0.0.1] - 2019-06-24
 
 > pre-release/alpha build
 
