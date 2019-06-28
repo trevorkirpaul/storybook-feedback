@@ -7,6 +7,18 @@
     "name": "Trevor Kirpaul",
     "email": "trevorkirpaul@gmail.com"
   },
+  "keywords": [
+    "storybook",
+    "storybook addon"
+  ],
+  "homepage": "https://github.com/trevorkirpaul/storybook-feedback/blob/master/README.md",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/trevorkirpaul/storybook-feedback.git"
+  },
+  "bugs": {
+    "url": "https://github.com/trevorkirpaul/storybook-feedback/issues"
+  },
   "dependencies": {
     "@storybook/addons": "5.1.9",
     "@storybook/api": "5.1.9",
