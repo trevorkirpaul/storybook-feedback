@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## Unreleased
 
+### Added
+
+- Icons package
+- comment delete feature
+
+### Changes
+
+- significant styling updates to how comments are rendered, now handles overflow correctly, renders an icon area
+
 ## [0.0.2] - 2019-06-24
 
 ### Added
