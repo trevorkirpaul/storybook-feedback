@@ -28,5 +28,6 @@ export default {
     'firebase',
     'uuid',
     'ramda',
+    'react-feather',
   ],
 }

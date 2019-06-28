@@ -42,4 +42,12 @@ const readComments = () => {
   })
 }
 
-export { sendComment, readComments }
+const deleteCommentById = (id: string) => {
+  firebase
+    .database()
+    .ref(`comments/${id}`)
+    .remove()
+    .then(() => {})
+}
+
+export { sendComment, readComments, deleteCommentById }

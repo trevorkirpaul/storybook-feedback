@@ -13,7 +13,11 @@ const sanitizeCommentsFromFirebase = (
     }
   }>
 ) => {
-  return R.valuesIn(comments)
+  const firebaseId = R.keysIn(comments)
+  return R.valuesIn(comments).map((comment, i) => ({
+    ...comment,
+    firebaseId: firebaseId[i],
+  }))
 }
 
 export { sanitizeCommentsFromFirebase, ADDON_ID, EVENT_ID }

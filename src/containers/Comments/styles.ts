@@ -11,4 +11,14 @@ const BoldText = styled(Text)`
   font-weight: 700;
 `
 
-export { Comments, Text, BoldText }
+const Clickable = styled.button`
+  background: none;
+  border: none;
+  padding: 2.5px;
+
+  &:hover {
+    cursor: pointer;
+  }
+`
+
+export { Comments, Text, BoldText, Clickable }
