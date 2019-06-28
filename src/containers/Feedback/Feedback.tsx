@@ -165,7 +165,7 @@ class Feedback extends React.Component<FeedbackProps> {
 
   render() {
     const { active } = this.props
-    const { email, avatar, comments, loading } = this.state
+    const { email, avatar, comments, loading, displayName } = this.state
 
     // addon not focused
     if (!active) {
@@ -193,6 +193,7 @@ class Feedback extends React.Component<FeedbackProps> {
           <ActionBar
             avatar={avatar}
             userEmail={email}
+            displayName={displayName}
             handleGetComments={this.handleGetComments}
             storyId={this.props.api.getUrlState().storyId}
           />

@@ -5,6 +5,9 @@ const ListItem = styled.li`
   min-height: 25px;
   padding: 5px;
 
+  white-space: pre-wrap;
+  overflow: hidden;
+
   &:nth-of-type(even) {
     background-color: #fce4ec;
   }

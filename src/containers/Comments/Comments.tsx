@@ -26,7 +26,7 @@ const Comments = ({ comments, storyId }: CommentsProps) => {
             return (
               <ListItem key={comment.uuid}>
                 <Text>
-                  {comment.author}: {comment.content}
+                  <S.BoldText>{comment.author}:</S.BoldText> {comment.content}
                 </Text>
               </ListItem>
             )

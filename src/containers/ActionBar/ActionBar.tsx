@@ -11,12 +11,13 @@ export interface ActionBarProps {
   userEmail: string
   handleGetComments: () => void
   storyId: string
+  displayName: string
 }
 
 const ActionBar = ({
   avatar,
   userEmail,
-  handleGetComments,
+  displayName,
   storyId,
 }: ActionBarProps) => {
   const [values, setValues] = React.useState({ message: '' })
@@ -33,7 +34,10 @@ const ActionBar = ({
 
   return (
     <S.ActionBar>
-      <Avatar source={avatar} />
+      <S.ProfileSection>
+        <Avatar source={avatar} />
+        <S.Text>{displayName}</S.Text>
+      </S.ProfileSection>
 
       <S.MessageSection>
         <S.TextArea
