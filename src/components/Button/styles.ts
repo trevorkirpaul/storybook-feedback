@@ -8,7 +8,7 @@ const Button = styled.button<ButtonProps>`
   background-color: ${({ variant }) =>
     variant === 'primary' ? 'palevioletred' : '#f8bbd0'};
   padding: 5px 10px;
-  color: ${({ variant }) => (variant === 'primary' ? '#fff' : 'magenta')};
+  color: ${({ variant }) => (variant === 'primary' ? '#fff' : 'palevioletred')};
 
   &:hover {
     cursor: pointer;

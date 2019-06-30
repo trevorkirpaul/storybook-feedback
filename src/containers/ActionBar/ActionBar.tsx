@@ -12,6 +12,7 @@ export interface ActionBarProps {
   handleGetComments: () => void
   storyId: string
   displayName: string
+  toggleSettingsMenu: () => void
 }
 
 const ActionBar = ({
@@ -19,6 +20,7 @@ const ActionBar = ({
   userEmail,
   displayName,
   storyId,
+  toggleSettingsMenu,
 }: ActionBarProps) => {
   const [values, setValues] = React.useState({ message: '' })
 
@@ -51,11 +53,8 @@ const ActionBar = ({
 
         <S.MessageActions>
           <Button onClick={() => send()}>Send</Button>
-          <Button
-            variant='secondary'
-            onClick={() => setValues({ message: '' })}
-          >
-            Clear
+          <Button variant='secondary' onClick={toggleSettingsMenu}>
+            Settings
           </Button>
         </S.MessageActions>
       </S.MessageSection>

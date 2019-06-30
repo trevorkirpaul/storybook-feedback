@@ -3,7 +3,9 @@ import * as firebase from 'firebase'
 
 import Login from 'containers/Login'
 import Chat from 'containers/Chat'
+import SettingsMenu from 'containers/SettingsMenu'
 import ActionBar from 'containers/ActionBar'
+import Text from 'components/Text'
 // import { getUserSession } from 'utils/googleAuth'
 import Comments from 'containers/Comments'
 import { readComments } from 'utils/firebase'
@@ -42,6 +44,10 @@ class Feedback extends React.Component<FeedbackProps> {
     comments: [],
     loading: false,
     noUserFound: false,
+    settingsMenuVisible: false,
+
+    // temporary state to reflect sign out completion
+    userHasSignedOut: false,
   }
 
   componentDidMount() {
@@ -189,9 +195,25 @@ class Feedback extends React.Component<FeedbackProps> {
       })
   }
 
+  toggleSettingsMenu = () => {
+    const { settingsMenuVisible } = this.state
+
+    return this.setState({ settingsMenuVisible: !settingsMenuVisible })
+  }
+
+  renderSignedOutState = () => this.setState({ userHasSignedOut: true })
+
   render() {
     const { active } = this.props
-    const { email, avatar, comments, loading, displayName } = this.state
+    const {
+      email,
+      avatar,
+      comments,
+      loading,
+      displayName,
+      settingsMenuVisible,
+      userHasSignedOut,
+    } = this.state
 
     // addon not focused
     if (!active) {
@@ -199,6 +221,14 @@ class Feedback extends React.Component<FeedbackProps> {
     }
 
     if (active) {
+      if (userHasSignedOut) {
+        return (
+          <React.Fragment>
+            <Text>You have signed out, please reload the page...</Text>
+          </React.Fragment>
+        )
+      }
+
       if (loading) {
         return <Loader />
       }
@@ -217,12 +247,18 @@ class Feedback extends React.Component<FeedbackProps> {
             userEmail={email}
           />
 
+          <SettingsMenu
+            visible={settingsMenuVisible}
+            renderSignedOutState={this.renderSignedOutState}
+          />
+
           <ActionBar
             avatar={avatar}
             userEmail={email}
             displayName={displayName}
             handleGetComments={this.handleGetComments}
             storyId={this.props.api.getUrlState().storyId}
+            toggleSettingsMenu={this.toggleSettingsMenu}
           />
         </Chat>
       )

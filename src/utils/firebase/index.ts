@@ -1,6 +1,13 @@
 import * as firebase from 'firebase'
 const uuidv4 = require('uuid/v4')
 
+const signOut = () => {
+  firebase
+    .auth()
+    .signOut()
+    .then()
+}
+
 const sendComment = ({
   content,
   author,
@@ -77,4 +84,4 @@ const updateComment = (id: string, content: string) => {
     .then(() => {})
 }
 
-export { sendComment, readComments, deleteCommentById, updateComment }
+export { sendComment, readComments, deleteCommentById, updateComment, signOut }
