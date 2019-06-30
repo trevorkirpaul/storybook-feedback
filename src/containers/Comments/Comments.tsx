@@ -17,9 +17,10 @@ export interface CommentsProps {
   }>
   handleGetComments: () => void
   storyId: string
+  userEmail?: string
 }
 
-const Comments = ({ comments, storyId }: CommentsProps) => {
+const Comments = ({ comments, storyId, userEmail }: CommentsProps) => {
   return (
     <S.Comments>
       <List>
@@ -34,11 +35,13 @@ const Comments = ({ comments, storyId }: CommentsProps) => {
                   </Text>
                 }
                 right={
-                  <S.Clickable
-                    onClick={() => deleteCommentById(comment.firebaseId)}
-                  >
-                    <Delete color='#383838' size={16} />
-                  </S.Clickable>
+                  userEmail === comment.author ? (
+                    <S.Clickable
+                      onClick={() => deleteCommentById(comment.firebaseId)}
+                    >
+                      <Delete color='#383838' size={16} />
+                    </S.Clickable>
+                  ) : null
                 }
               />
             )

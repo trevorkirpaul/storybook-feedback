@@ -214,6 +214,7 @@ class Feedback extends React.Component<FeedbackProps> {
             comments={comments}
             handleGetComments={this.handleGetComments}
             storyId={this.props.api.getUrlState().storyId}
+            userEmail={email}
           />
 
           <ActionBar
