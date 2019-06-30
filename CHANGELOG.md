@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Icons package
 - comment delete feature
+- "update comment" feature and associated components
 
 ### Changes
 

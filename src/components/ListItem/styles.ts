@@ -11,13 +11,20 @@ const ListItem = styled.li`
 
   white-space: pre-wrap;
 
-  &:nth-of-type(even) {
+  /*
+    The styles below, used to alternate background colors,
+    had to be moved to **src/containers/Comments/styles.ts**
+    since the styled-component, "Comment", is now the outermost
+    component
+  */
+
+  /* &:nth-of-type(even) {
     background-color: #fce4ec;
   }
 
   &:nth-of-type(odd) {
     background-color: #f8bbd0;
-  }
+  } */
 `
 
 const Left = styled.div`

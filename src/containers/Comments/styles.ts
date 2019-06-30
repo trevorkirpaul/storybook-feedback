@@ -8,6 +8,14 @@ const Comments = styled.div`
 
 const Comment = styled.div`
   position: relative;
+
+  &:nth-of-type(even) {
+    background-color: #fce4ec;
+  }
+
+  &:nth-of-type(odd) {
+    background-color: #f8bbd0;
+  }
 `
 
 const Text = styled(TextBase)<{ color?: string }>`
