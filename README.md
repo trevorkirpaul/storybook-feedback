@@ -14,7 +14,9 @@ There still needs to be a ton of fine tuning but the rest of the work will mainl
 
 - [x] remove redundant/unused deps
 - [x] truncate messages that exceed view width
-- [ ] add more chat features (delete/update)
+- [x] add more chat features (delete/update)
+- [ ] resolve issue with mobile view
+- [ ] add more options to Settings feature
 
 ## How to use this addon
 
@@ -46,6 +48,12 @@ configureDatabase({
 
 > You can find the values necessary by visiting your Firebase console.
 
-## Screenshot
+## Screenshots
 
-![storybook-feedback ui](https://i.imgur.com/MkaRBT8.png)
+### Viewing Comments
+
+![storybook-feedback ui viewing comments](https://i.imgur.com/ATOjTXi.png)
+
+### Editing a Comment
+
+![storybook-feedback ui editing a comment](https://i.imgur.com/UbvtdtO.png)
