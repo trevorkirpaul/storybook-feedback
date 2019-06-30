@@ -1,9 +1,8 @@
 import React from 'react'
-import { Delete } from 'react-feather'
 
-import { ListItem, List } from 'components/ListItem'
-import { deleteCommentById } from 'utils/firebase'
-import Text from 'components/Text'
+import { List } from 'components/ListItem'
+
+import Comment from './components/Comment'
 
 import * as S from './styles'
 
@@ -27,22 +26,11 @@ const Comments = ({ comments, storyId, userEmail }: CommentsProps) => {
         {comments.map((comment) => {
           if (comment.storyId === storyId) {
             return (
-              <ListItem
+              <Comment
                 key={comment.uuid}
-                left={
-                  <Text>
-                    <S.BoldText>{comment.author}:</S.BoldText> {comment.content}
-                  </Text>
-                }
-                right={
-                  userEmail === comment.author ? (
-                    <S.Clickable
-                      onClick={() => deleteCommentById(comment.firebaseId)}
-                    >
-                      <Delete color='#383838' size={16} />
-                    </S.Clickable>
-                  ) : null
-                }
+                comment={comment}
+                userEmail={userEmail}
+                storyId={storyId}
               />
             )
           }
