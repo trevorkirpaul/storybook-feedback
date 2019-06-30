@@ -3,8 +3,10 @@ import * as firebase from 'firebase'
 
 import Login from 'containers/Login'
 import Chat from 'containers/Chat'
+import SettingsMenu from 'containers/SettingsMenu'
 import ActionBar from 'containers/ActionBar'
-import { getUserSession } from 'utils/googleAuth'
+import Text from 'components/Text'
+// import { getUserSession } from 'utils/googleAuth'
 import Comments from 'containers/Comments'
 import { readComments } from 'utils/firebase'
 import { sanitizeCommentsFromFirebase, EVENT_ID } from 'utils/helpers'
@@ -25,6 +27,11 @@ export interface FeedbackProps {
   channel: any
 }
 
+/**
+ * This is the main component for the app.
+ *
+ * @TODO refactor auth system
+ */
 class Feedback extends React.Component<FeedbackProps> {
   state = {
     displayName: '',
@@ -37,6 +44,10 @@ class Feedback extends React.Component<FeedbackProps> {
     comments: [],
     loading: false,
     noUserFound: false,
+    settingsMenuVisible: false,
+
+    // temporary state to reflect sign out completion
+    userHasSignedOut: false,
   }
 
   componentDidMount() {
@@ -49,6 +60,12 @@ class Feedback extends React.Component<FeedbackProps> {
     channel.on(EVENT_ID, (config) => {
       firebase.initializeApp(config)
     })
+
+    // ? Removed using code below for now since
+    // ? it would appear that the code in `componentDidUpdate`
+    // ? is enough to get the user session. I'll need to
+    // ? look more into how to properly restore the user
+    // ? session without the short delay.
 
     // we are persisting user sessions
     // so let's first check if there is
@@ -69,6 +86,7 @@ class Feedback extends React.Component<FeedbackProps> {
   componentDidUpdate() {
     const { displayName, comments, loading, noUserFound } = this.state
 
+    // when length is greater than 0, it means that we have a connected DB
     const firebaseInitialized = firebase.apps.length > 0
 
     if (firebaseInitialized) {
@@ -77,7 +95,10 @@ class Feedback extends React.Component<FeedbackProps> {
       }
     }
 
-    // subscribe to get comments
+    // In order to keep the comment log updated, every time the component
+    // updates/renders, we'll check if the db comment length is different
+    // then what we have, if so we'll update. This is def not ideal but
+    // is a temporary solution that will do for now.
     if (displayName) {
       const commentsRef = firebase.database().ref('comments/')
 
@@ -91,6 +112,12 @@ class Feedback extends React.Component<FeedbackProps> {
     }
   }
 
+  /**
+   * when invoked, will allow us to get the user session data
+   * from firebase. The entire user session system def needs
+   * a lot of work and it's possible that `handleGetUserSession`
+   * has a better method of getting the session.
+   */
   handleGetFirebaseUser = () => {
     const { active } = this.props
     const { displayName } = this.state
@@ -121,37 +148,42 @@ class Feedback extends React.Component<FeedbackProps> {
     })
   }
 
-  handleGetUserSession = () => {
-    const { loading, displayName } = this.state
+  // handleGetUserSession = () => {
+  //   const { loading, displayName } = this.state
 
-    if (displayName) {
-      return null
-    }
+  //   if (displayName) {
+  //     return null
+  //   }
 
-    !loading && this.setState(() => ({ loading: true }))
+  //   !loading && this.setState(() => ({ loading: true }))
 
-    getUserSession()
-      .then((response) => {
-        if (!response.error) {
-          const { credential, displayName, email, avatar } = response
+  //   getUserSession()
+  //     .then((response) => {
+  //       if (!response.error) {
+  //         const { credential, displayName, email, avatar } = response
 
-          return this.setState({
-            credential,
-            displayName,
-            email,
-            avatar,
-            loading: false,
-          })
-        }
-      })
-      .catch((err) => {
-        return this.setState({ signInError: true, loading: false })
-      })
-  }
+  //         return this.setState({
+  //           credential,
+  //           displayName,
+  //           email,
+  //           avatar,
+  //           loading: false,
+  //         })
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       return this.setState({ signInError: true, loading: false })
+  //     })
+  // }
 
+  /**
+   * when invoked, will fetch comments from firebase. We are not using this
+   * anymore since `componentDidUpdate` keeps the comments array in state
+   * up to date
+   */
   handleGetComments = () => {
     readComments()
-      .then((response) => {
+      .then((response: any) => {
         return this.setState({
           comments: sanitizeCommentsFromFirebase(response.values),
         })
@@ -163,9 +195,25 @@ class Feedback extends React.Component<FeedbackProps> {
       })
   }
 
+  toggleSettingsMenu = () => {
+    const { settingsMenuVisible } = this.state
+
+    return this.setState({ settingsMenuVisible: !settingsMenuVisible })
+  }
+
+  renderSignedOutState = () => this.setState({ userHasSignedOut: true })
+
   render() {
     const { active } = this.props
-    const { email, avatar, comments, loading } = this.state
+    const {
+      email,
+      avatar,
+      comments,
+      loading,
+      displayName,
+      settingsMenuVisible,
+      userHasSignedOut,
+    } = this.state
 
     // addon not focused
     if (!active) {
@@ -173,6 +221,14 @@ class Feedback extends React.Component<FeedbackProps> {
     }
 
     if (active) {
+      if (userHasSignedOut) {
+        return (
+          <React.Fragment>
+            <Text>You have signed out, please reload the page...</Text>
+          </React.Fragment>
+        )
+      }
+
       if (loading) {
         return <Loader />
       }
@@ -188,13 +244,21 @@ class Feedback extends React.Component<FeedbackProps> {
             comments={comments}
             handleGetComments={this.handleGetComments}
             storyId={this.props.api.getUrlState().storyId}
+            userEmail={email}
+          />
+
+          <SettingsMenu
+            visible={settingsMenuVisible}
+            renderSignedOutState={this.renderSignedOutState}
           />
 
           <ActionBar
             avatar={avatar}
             userEmail={email}
+            displayName={displayName}
             handleGetComments={this.handleGetComments}
             storyId={this.props.api.getUrlState().storyId}
+            toggleSettingsMenu={this.toggleSettingsMenu}
           />
         </Chat>
       )

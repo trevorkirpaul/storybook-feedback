@@ -10,10 +10,16 @@ const List = ({ children }: ListProps) => {
 }
 
 export interface ListItemProps {
-  children: React.ReactNode
+  left: React.ReactNode
+  right: React.ReactNode
 }
-const ListItem = ({ children }: ListItemProps) => {
-  return <S.ListItem>{children}</S.ListItem>
+const ListItem = ({ left, right }: ListItemProps) => {
+  return (
+    <S.ListItem>
+      <S.Left>{left}</S.Left>
+      <S.Right>{right}</S.Right>
+    </S.ListItem>
+  )
 }
 
 export { ListItem, List }

@@ -2,6 +2,7 @@ import styled from 'styled-components'
 
 import { Input as InputBase } from 'components/Form'
 import TextAreaBase from 'components/TextArea'
+import TextBase from 'components/Text'
 
 const ActionBar = styled.div`
   /* width: 100%; */
@@ -13,6 +14,14 @@ const ActionBar = styled.div`
 
   display: flex;
   justify-content: space-between;
+`
+
+const ProfileSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
 `
 
 const MessageSection = styled.div`
@@ -39,4 +48,14 @@ const TextArea = styled(TextAreaBase)`
   width: 80%;
 `
 
-export { ActionBar, MessageSection, MessageActions, Input, TextArea }
+const Text = styled(TextBase)``
+
+export {
+  ActionBar,
+  ProfileSection,
+  MessageSection,
+  MessageActions,
+  Input,
+  TextArea,
+  Text,
+}

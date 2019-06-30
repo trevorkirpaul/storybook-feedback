@@ -11,13 +11,16 @@ export interface ActionBarProps {
   userEmail: string
   handleGetComments: () => void
   storyId: string
+  displayName: string
+  toggleSettingsMenu: () => void
 }
 
 const ActionBar = ({
   avatar,
   userEmail,
-  handleGetComments,
+  displayName,
   storyId,
+  toggleSettingsMenu,
 }: ActionBarProps) => {
   const [values, setValues] = React.useState({ message: '' })
 
@@ -33,7 +36,10 @@ const ActionBar = ({
 
   return (
     <S.ActionBar>
-      <Avatar source={avatar} />
+      <S.ProfileSection>
+        <Avatar source={avatar} />
+        <S.Text>{displayName}</S.Text>
+      </S.ProfileSection>
 
       <S.MessageSection>
         <S.TextArea
@@ -47,11 +53,8 @@ const ActionBar = ({
 
         <S.MessageActions>
           <Button onClick={() => send()}>Send</Button>
-          <Button
-            variant='secondary'
-            onClick={() => setValues({ message: '' })}
-          >
-            Clear
+          <Button variant='secondary' onClick={toggleSettingsMenu}>
+            Settings
           </Button>
         </S.MessageActions>
       </S.MessageSection>

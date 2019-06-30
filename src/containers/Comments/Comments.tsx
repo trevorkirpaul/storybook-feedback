@@ -1,8 +1,8 @@
 import React from 'react'
 
-import { ListItem, List } from 'components/ListItem'
-import Text from 'components/Text'
-import Button from 'components/Button'
+import { List } from 'components/ListItem'
+
+import Comment from './components/Comment'
 
 import * as S from './styles'
 
@@ -12,23 +12,26 @@ export interface CommentsProps {
     content: string
     uuid: string
     storyId: string
+    firebaseId: string
   }>
   handleGetComments: () => void
   storyId: string
+  userEmail?: string
 }
 
-const Comments = ({ comments, storyId }: CommentsProps) => {
+const Comments = ({ comments, storyId, userEmail }: CommentsProps) => {
   return (
     <S.Comments>
       <List>
         {comments.map((comment) => {
           if (comment.storyId === storyId) {
             return (
-              <ListItem key={comment.uuid}>
-                <Text>
-                  {comment.author}: {comment.content}
-                </Text>
-              </ListItem>
+              <Comment
+                key={comment.uuid}
+                comment={comment}
+                userEmail={userEmail}
+                storyId={storyId}
+              />
             )
           }
         })}

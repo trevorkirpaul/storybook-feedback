@@ -12,8 +12,8 @@ There still needs to be a ton of fine tuning but the rest of the work will mainl
 
 ## Todo
 
-- [ ] remove redundant/unused deps
-- [ ] truncate messages that exceed view width
+- [x] remove redundant/unused deps
+- [x] truncate messages that exceed view width
 - [ ] add more chat features (delete/update)
 
 ## How to use this addon
