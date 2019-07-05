@@ -6,6 +6,10 @@ export interface AvatarProps {
   source: string
 }
 
+/**
+ * **Avatar** is in charge of rendering
+ * the user's profile picture
+ */
 const Avatar = ({ source }: AvatarProps) => {
   return (
     <S.Avatar>
