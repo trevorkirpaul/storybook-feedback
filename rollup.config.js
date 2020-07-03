@@ -1,5 +1,5 @@
 // rollup.config.js
-import resolve from 'rollup-plugin-node-resolve'
+import resolve from '@rollup/plugin-node-resolve'
 import babel from 'rollup-plugin-babel'
 import rollupTypescript from 'rollup-plugin-typescript'
 import minify from 'rollup-plugin-babel-minify'
@@ -11,7 +11,9 @@ export default {
     format: 'cjs',
   },
   plugins: [
-    resolve(),
+    resolve({
+      preferBuiltins: false,
+    }),
     rollupTypescript(), // for TS
     babel({
       exclude: 'node_modules/**', // only transpile our source code
@@ -27,7 +29,8 @@ export default {
     'styled-components',
     'firebase',
     'uuid',
-    'ramda',
+    'lodash',
+    'realm-web',
     'react-feather',
   ],
 }

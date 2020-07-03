@@ -1,5 +1,7 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import * as firebase from 'firebase'
+import * as RealmWeb from 'realm-web'
+import { Channel } from '@storybook/channels'
 
 import Login from 'containers/Login'
 import Chat from 'containers/Chat'
@@ -11,6 +13,8 @@ import Comments from 'containers/Comments'
 import { readComments } from 'utils/firebase'
 import { sanitizeCommentsFromFirebase, EVENT_ID } from 'utils/helpers'
 import Loader from 'components/Loader'
+import { configureDatabaseArguments } from 'utils/configure'
+import { configureRealmWebApp } from 'utils/mongo'
 
 export interface FeedbackProps {
   active: boolean
@@ -20,11 +24,62 @@ export interface FeedbackProps {
    * Firebase DB instance
    */
   database?: any
-  // @TODO get correct type
   /**
-   * used to transport config from storybook config
+   * Storybook Channel derived from:
+   * addons.getChannel() from main.tsx
    */
-  channel: any
+  channel: Channel
+}
+
+const StorybookFeedback = ({ channel }: FeedbackProps) => {
+  const [realmWeb, setRealmWeb] = useState<RealmWeb.App | null>(null)
+  const [authenticatedUser, setAuthenticatedUser] = useState(false)
+
+  /**
+   * Connect to correct DB type
+   */
+  const handleConfigureDatabase = ({
+    databaseType,
+    firebaseConfig,
+    mongoConfig,
+  }: configureDatabaseArguments) => {
+    if (databaseType === 'firebase' && firebaseConfig) {
+      firebase.initializeApp(firebaseConfig)
+    }
+
+    if (databaseType === 'mongoDB' && mongoConfig) {
+      const configuredRealmWeb = configureRealmWebApp({
+        realmConfig: mongoConfig,
+      })
+
+      setRealmWeb(configuredRealmWeb)
+    }
+  }
+
+  /**
+   * on mount and when we receive the storybook config,
+   * invoke function to connect to DB
+   */
+  useEffect(() => {
+    if (!realmWeb) {
+      channel.on(EVENT_ID, handleConfigureDatabase)
+    }
+  }, [realmWeb, channel])
+
+  /**
+   * If
+   */
+  // useEffect(() => {
+
+  // }, [
+  //   authenticatedUser,
+  //   realmWeb
+  // ])
+
+  if (!authenticatedUser) {
+    return <Login />
+  }
+  return null
 }
 
 /**
@@ -57,9 +112,20 @@ class Feedback extends React.Component<FeedbackProps> {
     // firebase connection
     const firebaseInitialized = firebase.apps.length > 0
 
-    channel.on(EVENT_ID, (config) => {
-      firebase.initializeApp(config)
-    })
+    channel.on(
+      EVENT_ID,
+      ({
+        databaseType,
+        firebaseConfig,
+        mongoConfig,
+      }: configureDatabaseArguments) => {
+        if (databaseType === 'firebase' && firebaseConfig) {
+          firebase.initializeApp(firebaseConfig)
+        } else if (databaseType === 'mongoDB' && mongoConfig) {
+          // Connect to mongo
+        }
+      }
+    )
 
     // ? Removed using code below for now since
     // ? it would appear that the code in `componentDidUpdate`
@@ -266,4 +332,4 @@ class Feedback extends React.Component<FeedbackProps> {
   }
 }
 
-export default Feedback
+export default StorybookFeedback

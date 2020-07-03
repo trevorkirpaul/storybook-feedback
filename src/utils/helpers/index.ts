@@ -1,6 +1,9 @@
-import * as R from 'ramda'
+import { valuesIn, keysIn } from 'lodash'
 
 const ADDON_ID = 'Feedback/panel'
+/**
+ * Message ID for Storybook-Feedback Addon
+ */
 const EVENT_ID = `${ADDON_ID}/event`
 
 const sanitizeCommentsFromFirebase = (
@@ -13,8 +16,8 @@ const sanitizeCommentsFromFirebase = (
     }
   }>
 ) => {
-  const firebaseId = R.keysIn(comments)
-  return R.valuesIn(comments).map((comment, i) => ({
+  const firebaseId = keysIn(comments)
+  return valuesIn(comments).map((comment, i) => ({
     ...comment,
     firebaseId: firebaseId[i],
   }))

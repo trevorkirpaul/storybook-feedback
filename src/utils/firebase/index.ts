@@ -1,11 +1,8 @@
 import * as firebase from 'firebase'
-const uuidv4 = require('uuid/v4')
+import { v4 as uuidv4 } from 'uuid'
 
 const signOut = () => {
-  firebase
-    .auth()
-    .signOut()
-    .then()
+  firebase.auth().signOut().then()
 }
 
 const sendComment = ({
@@ -17,15 +14,12 @@ const sendComment = ({
   author: string
   storyId: string
 }) => {
-  return firebase
-    .database()
-    .ref('comments/')
-    .push({
-      content,
-      author,
-      uuid: uuidv4(),
-      storyId,
-    })
+  return firebase.database().ref('comments/').push({
+    content,
+    author,
+    uuid: uuidv4(),
+    storyId,
+  })
 }
 
 const readComments = () => {

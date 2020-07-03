@@ -2,6 +2,8 @@ import addons from '@storybook/addons'
 
 import { EVENT_ID } from 'utils/helpers'
 
+import { RealmConfig } from '../mongo'
+
 export interface configureDatabaseArguments {
   databaseType: 'firebase' | 'mongoDB'
   firebaseConfig?: {
@@ -12,11 +14,13 @@ export interface configureDatabaseArguments {
     storageBucket: string
     messagingSenderId: string
   }
+  mongoConfig?: RealmConfig
 }
 
 const configureDatabase = ({
   databaseType,
   firebaseConfig,
+  mongoConfig,
 }: configureDatabaseArguments) => {
   const channel = addons.getChannel()
 
@@ -25,11 +29,11 @@ const configureDatabase = ({
   }
 
   if (databaseType === 'firebase' && firebaseConfig) {
-    return channel.emit(EVENT_ID, firebaseConfig)
+    return channel.emit(EVENT_ID, { databaseType, firebaseConfig, mongoConfig })
   }
 
   if (databaseType === 'mongoDB') {
-    console.log('Coming soon!')
+    return channel.emit(EVENT_ID, { databaseType, firebaseConfig, mongoConfig })
   }
 }
 

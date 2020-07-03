@@ -34,7 +34,7 @@ Within your `.storybook/config.ts` file, add this:
 import { configureDatabase } from 'storybook-feedback'
 
 configureDatabase({
-  databaseType: 'firebase',
+  databaseType: 'firebase || mongoDB', // select one based on your DB type
   firebaseConfig: {
     apiKey: '',
     authDomain: '',
@@ -43,10 +43,13 @@ configureDatabase({
     storageBucket: '',
     messagingSenderId: '',
   },
+  mongoConfig: {
+    id: '',
+  },
 })
 ```
 
-> You can find the values necessary by visiting your Firebase console.
+> You can find the values necessary by visiting your Firebase/ Mongo console.
 
 ## Screenshots
 
