@@ -20,6 +20,7 @@
     "url": "https://github.com/trevorkirpaul/storybook-feedback/issues"
   },
   "dependencies": {
+    "@apollo/react-hooks": "^3.1.5",
     "@storybook/addons": "5.3.19",
     "@storybook/api": "5.3.19",
     "@storybook/client-logger": "5.3.19",
@@ -29,11 +30,17 @@
     "@storybook/theming": "5.3.19",
     "@types/styled-components": "^5.1.0",
     "@types/uuid": "^8.0.0",
+    "apollo-boost": "^0.4.9",
+    "apollo-link-context": "^1.0.20",
     "core-js": "3.6.5",
     "firebase": "^7.15.5",
+    "graphql": "^15.2.0",
+    "graphql-tag": "^2.10.3",
     "lodash": "^4.17.15",
     "react": "16.13.1",
     "react-feather": "^2.0.8",
+    "react-google-login": "^5.1.20",
+    "realm": "^6.0.2",
     "realm-web": "^0.6.0",
     "styled-components": "^5.1.1",
     "uuid": "^8.2.0"

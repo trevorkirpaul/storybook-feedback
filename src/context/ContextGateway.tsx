@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
+import * as RealmWeb from 'realm-web'
 
 import ConfigContext, { ConfigContextState } from './config'
+import UserProfileContext, { UserProfileState } from './UserProfileContext'
 
 interface Props {
   children: React.ReactNode
@@ -11,17 +13,24 @@ const ContextGateway = ({ children }: Props) => {
     ConfigContextState
   >({
     databaseType: undefined,
-    setDatabaseType: (databaseType) =>
-      setConfigContextState({
-        ...configContextState,
-        databaseType,
+    mongoRealm: undefined,
+    updateConfig: (config) => setConfigContextState(config),
+  })
+
+  const [userProfileState, setUserProfileState] = useState<UserProfileState>({
+    setProfile: (p) =>
+      setUserProfileState({
+        ...userProfileState,
+        profile: p,
       }),
   })
 
   return (
     <>
       <ConfigContext.Provider value={configContextState}>
-        {children}
+        <UserProfileContext.Provider value={userProfileState}>
+          {children}
+        </UserProfileContext.Provider>
       </ConfigContext.Provider>
     </>
   )

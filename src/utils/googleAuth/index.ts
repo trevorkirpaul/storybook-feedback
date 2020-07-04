@@ -9,10 +9,12 @@ const googleSignIn = () => {
     .auth()
     .signInWithRedirect(provider)
     .then((result) => {
-      console.log(result)
+      // @TODO: complete google connection
+      // console.log(result)
     })
     .catch((error) => {
-      console.log(error)
+      throw new Error('Storybook-Feedback: Failed to google auth')
+      // console.log(error)
     })
 }
 
@@ -50,4 +52,7 @@ const getUserSession = () => {
     })
 }
 
-export { googleSignIn, getUserSession }
+const clientID =
+  '514439096132-g85n6sfj4dc3prb7bifp2gsfc72c5ejr.apps.googleusercontent.com'
+
+export { googleSignIn, getUserSession, clientID }

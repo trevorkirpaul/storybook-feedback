@@ -1,17 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import Button from 'components/Button'
 import Link from 'components/Link'
-import { signOut } from 'utils/firebase'
 
 import * as S from './styles'
 
 export interface SettingsMenuProps {
   visible: boolean
-  renderSignedOutState: () => void
+  // renderSignedOutState: () => void
+  handleToggleSettings: () => void
 }
 
-const SettingsMenu = ({ visible, renderSignedOutState }: SettingsMenuProps) => {
+const SettingsMenu = ({ visible, handleToggleSettings }: SettingsMenuProps) => {
   if (!visible) return null
 
   return (
@@ -29,8 +29,7 @@ const SettingsMenu = ({ visible, renderSignedOutState }: SettingsMenuProps) => {
 
       <Button
         onClick={() => {
-          signOut()
-          return renderSignedOutState()
+          handleToggleSettings()
         }}
       >
         Sign Out

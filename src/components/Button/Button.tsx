@@ -6,12 +6,13 @@ export interface ButtonProps {
   children: string
   onClick: () => void
   variant: 'primary' | 'secondary'
+  loading?: boolean
 }
 
-const Button = ({ children, onClick, variant }: ButtonProps) => {
+const Button = ({ children, onClick, variant, loading }: ButtonProps) => {
   return (
-    <S.Button variant={variant} onClick={onClick}>
-      {children}
+    <S.Button disabled={loading} variant={variant} onClick={onClick}>
+      {!loading ? children : '...loading'}
     </S.Button>
   )
 }

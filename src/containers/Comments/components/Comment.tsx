@@ -4,17 +4,12 @@ import { Delete, Edit, CheckSquare, XCircle } from 'react-feather'
 import { ListItem } from 'components/ListItem'
 import { deleteCommentById, updateComment } from 'utils/firebase'
 import Text from 'components/Text'
+import { CommentInterface } from 'utils/mongo/schemas/comment'
 
 import * as S from '../styles'
 
 export interface CommentProps {
-  comment: {
-    author: string
-    content: string
-    uuid: string
-    storyId: string
-    firebaseId: string
-  }
+  comment: CommentInterface
   userEmail?: string
   storyId: string
 }

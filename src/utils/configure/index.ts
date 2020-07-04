@@ -1,5 +1,4 @@
-import addons from '@storybook/addons'
-
+import { addons } from '@storybook/addons'
 import { EVENT_ID } from 'utils/helpers'
 
 import { RealmConfig } from '../mongo'
@@ -17,23 +16,31 @@ export interface configureDatabaseArguments {
   mongoConfig?: RealmConfig
 }
 
-const configureDatabase = ({
+const configureDatabase = async ({
   databaseType,
   firebaseConfig,
   mongoConfig,
 }: configureDatabaseArguments) => {
-  const channel = addons.getChannel()
+  const isReady = await addons.ready()
 
-  if (!channel) {
-    console.log('Error getting channel')
-  }
+  if (isReady) {
+    const channel = addons.getChannel()
 
-  if (databaseType === 'firebase' && firebaseConfig) {
-    return channel.emit(EVENT_ID, { databaseType, firebaseConfig, mongoConfig })
-  }
+    if (databaseType === 'firebase' && firebaseConfig) {
+      return channel.emit(EVENT_ID, {
+        databaseType,
+        firebaseConfig,
+        mongoConfig,
+      })
+    }
 
-  if (databaseType === 'mongoDB') {
-    return channel.emit(EVENT_ID, { databaseType, firebaseConfig, mongoConfig })
+    if (databaseType === 'mongoDB') {
+      return channel.emit(EVENT_ID, {
+        databaseType,
+        firebaseConfig,
+        mongoConfig,
+      })
+    }
   }
 }
 

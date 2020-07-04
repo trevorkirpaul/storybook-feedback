@@ -1,5 +1,7 @@
 import * as RealmWeb from 'realm-web'
 import { isNil, get } from 'lodash'
+import { setContext } from 'apollo-link-context'
+import { ApolloClient, HttpLink, InMemoryCache, ApolloLink } from 'apollo-boost'
 
 export interface RealmConfig {
   id: string
@@ -62,4 +64,55 @@ export const authenticateMongoUser = ({
       reject(err)
     }
   })
+}
+
+interface AuthorizationHeaderLink {
+  app: RealmWeb.App
+}
+
+// Add an Authorization header with a valid user access token to all GraphQL requests
+export const createAuthorizationHeaderLink = ({
+  app,
+}: AuthorizationHeaderLink) =>
+  setContext(async (_, { headers }) => {
+    if (app.currentUser) {
+      // Refreshing custom data also refreshes the access token
+      await app.currentUser.refreshCustomData()
+    } else {
+      // If no user is logged in, log in an anonymous user
+      await app.logIn(RealmWeb.Credentials.anonymous())
+    }
+    // Get a valid access token for the current user
+    const accessToken = get(app, 'currentUser.accessToken')
+
+    // Set the Authorization header, preserving any other headers
+    return {
+      headers: {
+        ...headers,
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  })
+
+// Construct a new Apollo HttpLink that connects to your app's GraphQL endpoint
+const createGraphqlUrl = (appId: string) =>
+  `https://realm.mongodb.com/api/client/v2.0/app/${appId}/graphql`
+export const createHttpLink = (appId: string) =>
+  new HttpLink({ uri: createGraphqlUrl(appId) })
+
+interface CreateApolloClient {
+  appId: string
+  app: RealmWeb.App
+}
+
+export const createApolloClient = ({ appId, app }: CreateApolloClient) => {
+  const httpLink = createHttpLink(appId)
+  const authorizationHeaderLink = createAuthorizationHeaderLink({ app })
+
+  const client = new ApolloClient({
+    link: authorizationHeaderLink.concat(httpLink),
+    cache: new InMemoryCache(),
+  })
+
+  return client
 }
